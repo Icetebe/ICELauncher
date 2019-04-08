@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6D9DFDAF-8762-4CFA-B8CA-EBF68934F936}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ICELauncher</RootNamespace>
+    <AssemblyName>ICELauncher</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resource\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Tasks.v4.0" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Config\ConfigHandler.cs" />
+    <Compile Include="Config\LauncherProfilesConfig.cs" />
+    <Compile Include="Config\MainConfig.cs" />
+    <Compile Include="Controls\ServerInfoControl.xaml.cs">
+      <DependentUpon>ServerInfoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Modules\Log.cs" />
+    <Compile Include="Core\Net\Dns\Header.cs" />
+    <Compile Include="Core\Net\Dns\Question.cs" />
+    <Compile Include="Core\Net\Dns\RecordReader.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordA6.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordAPL.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordATMA.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordCERT.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordDHCID.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordDNSKEY.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordEID.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordGID.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordHIP.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordIPSECKEY.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordNIMLOC.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordNSEC.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordNSEC3.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordNSEC3PARAM.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordOPT.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordRRSIG.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordSINK.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordSPF.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordSSHFP.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordUID.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordUINFO.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordUnknown.cs" />
+    <Compile Include="Core\Net\Dns\Records\NotUsed\RecordUNSPEC.cs" />
+    <Compile Include="Core\Net\Dns\Records\Obsolete\RecordGPOS.cs" />
+    <Compile Include="Core\Net\Dns\Records\Obsolete\RecordMD.cs" />
+    <Compile Include="Core\Net\Dns\Records\Obsolete\RecordMF.cs" />
+    <Compile Include="Core\Net\Dns\Records\Obsolete\RecordNSAPPTR.cs" />
+    <Compile Include="Core\Net\Dns\Records\Obsolete\RecordNXT.cs" />
+    <Compile Include="Core\Net\Dns\Records\Record.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordA.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordAAAA.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordAFSDB.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordCNAME.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordDNAME.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordDS.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordHINFO.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordISDN.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordKEY.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordKX.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordLOC.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordMB.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordMG.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordMINFO.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordMR.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordMX.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordNAPTR.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordNS.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordNSAP.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordNULL.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordPTR.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordPX.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordRP.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordRT.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordSIG.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordSOA.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordSRV.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordTKEY.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordTSIG.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordTXT.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordWKS.cs" />
+    <Compile Include="Core\Net\Dns\Records\RecordX25.cs" />
+    <Compile Include="Core\Net\Dns\Request.cs" />
+    <Compile Include="Core\Net\Dns\Resolver.cs" />
+    <Compile Include="Core\Net\Dns\Response.cs" />
+    <Compile Include="Core\Net\Dns\RR.cs" />
+    <Compile Include="Core\Net\Dns\Structs.cs" />
+    <Compile Include="Core\Net\DownloadSource.cs" />
+    <Compile Include="Core\Net\DownloadTask.cs" />
+    <Compile Include="Core\Net\FunctionAPI\APIModules.cs" />
+    <Compile Include="Core\Net\FunctionAPI\FunctionAPIHandler.cs" />
+    <Compile Include="Core\Net\Nide8API\APIHandler.cs" />
+    <Compile Include="Core\Net\Nide8API\APIModules.cs" />
+    <Compile Include="Core\Net\Server\ForgeInfo.cs" />
+    <Compile Include="Core\Net\Server\ProtocolHandler.cs" />
+    <Compile Include="Core\Net\Server\ServerInfo.cs" />
+    <Compile Include="Core\Net\Tools\GetDownloadUrl.cs" />
+    <Compile Include="Core\Util\AssetsReader.cs" />
+    <Compile Include="Core\Util\GetLost.cs" />
+    <Compile Include="Core\Util\LogHandler.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Utils\MultiThreadDownloader.cs" />
+    <Compile Include="Utils\Converter.cs" />
+    <Compile Include="Utils\DataChecker.cs" />
+    <Compile Include="Windows\DebugWindow.xaml.cs">
+      <DependentUpon>DebugWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DownloadWindow.xaml.cs">
+      <DependentUpon>DownloadWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ErrorWindow.xaml.cs">
+      <DependentUpon>ErrorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\NewDownloadTaskWindow.xaml.cs">
+      <DependentUpon>NewDownloadTaskWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\ServerInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ArgumentsParser.cs" />
+    <Compile Include="Core\Auth\OfflineAuthenticator.cs" />
+    <Compile Include="Core\LaunchException\LaunchException.cs" />
+    <Compile Include="Core\LaunchException\NativeNotFoundException.cs" />
+    <Compile Include="Core\LaunchHandler.cs" />
+    <Compile Include="Core\Modules\LaunchSetting.cs" />
+    <Compile Include="Core\Net\MojangAPI\Api\Requester.cs" />
+    <Compile Include="Core\Net\MojangAPI\Api\Uuid.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\ApiStatus.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\Authentication.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\BlockedServers.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\Challenges.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\ChangeSkin.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\IEndpoint.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\NameHistory.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\Profile.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\ResetSkin.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\SecureIP.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\Statistics.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\UploadSkin.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\UuidAtTime.cs" />
+    <Compile Include="Core\Net\MojangAPI\Endpoints\UuidByNames.cs" />
+    <Compile Include="Core\Net\MojangAPI\Responses\ApiStatusResponse.cs" />
+    <Compile Include="Core\Net\MojangAPI\Responses\AuthenticationResponses.cs" />
+    <Compile Include="Core\Net\MojangAPI\Responses\BlockedServersResponse.cs" />
+    <Compile Include="Core\Net\MojangAPI\Responses\ChallengesResponse.cs" />
+    <Compile Include="Core\Net\MojangAPI\Responses\NameHistoryResponse.cs" />
+    <Compile Include="Core\Net\MojangAPI\Responses\ProfileResponses.cs" />
+    <Compile Include="Core\Net\MojangAPI\Responses\Response.cs" />
+    <Compile Include="Core\Net\MojangAPI\Responses\StatisticsResponse.cs" />
+    <Compile Include="Core\Net\MojangAPI\Responses\UuidAtTimeResponse.cs" />
+    <Compile Include="Core\Net\MojangAPI\Responses\UuidByNamesResponse.cs" />
+    <Compile Include="Core\Modules\Version.cs" />
+    <Compile Include="Core\Util\GameHelper.cs" />
+    <Compile Include="Core\Util\Java.cs" />
+    <Compile Include="Core\Modules\LaunchResult.cs" />
+    <Compile Include="Core\Util\SystemTools.cs" />
+    <Compile Include="Core\Util\Unzip.cs" />
+    <Compile Include="Core\Util\VersionReader.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Resource\Language\en_US.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resource\Language\zh_CN.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DebugWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DownloadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ErrorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\NewDownloadTaskWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\bg.png" />
+    <Resource Include="Resource\defaultIcon.png" />
+    <Resource Include="Resource\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Costura.Fody">
+      <Version>3.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="Fody">
+      <Version>3.1.3</Version>
+    </PackageReference>
+    <PackageReference Include="MahApps.Metro">
+      <Version>1.6.5</Version>
+    </PackageReference>
+    <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome">
+      <Version>2.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Bcl.Async">
+      <Version>1.0.168</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Bcl.Build">
+      <Version>1.0.21</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Net.Http">
+      <Version>2.2.29</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>11.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="SharpZipLib">
+      <Version>0.86.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\Steve.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Core\Net\Dns\Records\totla.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
