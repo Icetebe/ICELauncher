@@ -1,4 +1,4 @@
-﻿<Controls:MetroWindow x:Class="ICELauncher.Windows.SettingWindow"
+<Controls:MetroWindow x:Class="ICELauncher.Windows.SettingWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -288,8 +288,24 @@
             </TabItem>
             <TabItem Header="关于">
                 <StackPanel>
-                    <TextBlock Margin="10,0"><Run Text="本"/><Run Text="程序"/><Run Text="由Icetebe"/><Run Text="最终发布"/><Run Text="，仅适用于Icecraft 寒冰之家"/><Run Text="。"/></TextBlock>
-                    <TextBlock Margin="10,0"><Run Text="鸣谢："/><LineBreak/><Run Text="①感谢Siso开发并提供本软件源代码"/><Run Text="；"/><Run Text="②感谢GiNYAi提供技术指导"/><Run Text="。"/><Run Text=" "/></TextBlock>
+                    <TextBlock Margin="10,0">
+                        启动器维基
+                        <Hyperlink NavigateUri="https://github.com/Icetebe/ICELaucher/wiki">
+                            https://github.com/Icetebe/ICELaucher/wiki
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="10,0">
+                        启动器声明
+                        <Hyperlink NavigateUri="https://github.com/Icetebe/ICELaucher/blob/master/README.md">
+                            https://github.com/Icetebe/ICELaucher/blob/master/README.md
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="10,0">
+                        启动器开源
+                        <Hyperlink NavigateUri="https://github.com/Icetebe/ICELaucher">
+                            https://github.com/Icetebe/ICELaucher
+                        </Hyperlink>
+                    </TextBlock>
                 </StackPanel>
             </TabItem>
 
