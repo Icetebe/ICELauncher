@@ -1,4 +1,4 @@
-# NsisoLauncher
+# IceLauncher
 A New Icecraft Launcher (unofficial) from Icetebe
 
 感谢您关注到Icecraft启动器的开源项目 此开源项目是为了尊重原作者、帮助各位学习，方便纠错，以及证明用户安全保障。
