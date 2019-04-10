@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -115,7 +115,7 @@ namespace ICELauncher.Windows
         //作者github点击后
         private void Hyperlink_Click_2(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/Nsiso");
+            System.Diagnostics.Process.Start("https://github.com/Icetebe");
         }
 
         private void RebootButton_Click(object sender, RoutedEventArgs e)
