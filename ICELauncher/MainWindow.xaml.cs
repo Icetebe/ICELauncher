@@ -264,7 +264,7 @@ namespace ICELauncher
                         loginMsg2 = App.GetResourceString("String.Mainwindow.Auth.Mojang.Login2");
                         verifyingMsg = App.GetResourceString("String.Mainwindow.Auth.Mojang.Verifying");
                         verifyingMsg2 = App.GetResourceString("String.Mainwindow.Auth.Mojang.Verifying2");
-                        verifyingFailedMsg = App.GetResourceString("String.MaMainwindow.Auth.Mojang.Logininwindow.Auth.Mojang.VerificationFailed");
+                        verifyingFailedMsg = App.GetResourceString("String.Mainwindow.Auth.Mojang.VerificationFailed");
                         verifyingFailedMsg2 = App.GetResourceString("String.Mainwindow.Auth.Mojang.VerificationFailed2");
                         break;
                     #endregion
