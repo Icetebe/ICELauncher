@@ -1,319 +1,303 @@
-<Controls:MetroWindow x:Class="ICELauncher.Windows.SettingWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:util="clr-namespace:ICELauncher.Utils"
-        xmlns:local="clr-namespace:ICELauncher.Windows"
-        mc:Ignorable="d"
-        Title="{DynamicResource String.Settingwindow.Title}" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <Controls:MetroWindow.Resources>
-        <util:BoolToOppositeBoolConverter x:Key="BoolToOppositeBoolConverter"/>
-        <util:SettingDirRadioButtonConverter x:Key="SettingDirRadioButtonConverter" />
-        <util:SettingDownloadRadioButtonConverter x:Key="SettingDownloadRadioButtonConverter" />
-        <util:SettingLoginTypeRadioButtonConverter x:Key="SettingLoginTypeRadioButtonConverter"/>
-        <util:SettingCGRadioButtonConverter x:Key="SettingCGRadioButtonConverter"/>
-        <util:StringToIntConverter x:Key="StringToIntConverter" />
-    </Controls:MetroWindow.Resources>
-    <Grid>
-        <Grid.Resources>
-            <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
-        </Grid.Resources>
-        <TabControl x:Name="tabControl" Margin="0,0,0,50">
-            <TabItem Header="{DynamicResource String.Settingwindow.Env}">
-                <ScrollViewer>
-                    <StackPanel x:Name="environmentGrid" Margin="10,0">
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Java}" Margin="0,0,0,5">
-                            <StackPanel>
-                                <Controls:ToggleSwitch
-                                x:Name="isAutoJavaToggle"
-                                OnLabel="{DynamicResource String.Settingwindow.Env.Java.AutoOn}"
-                                OffLabel="{DynamicResource String.Settingwindow.Env.Java.AutoOff}"
-                                Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                IsChecked="{Binding Path=AutoJava}"
-                                />
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Java.Path}" Margin="0,10,0,0"/>
-                                <ComboBox x:Name="javaPathComboBox"
-                                      IsEditable="True"
-                                      IsReadOnly="True"
-                                      IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, ElementName=isAutoJavaToggle}"
-                                      DisplayMemberPath="Path"
-                                      Text="{Binding JavaPath}" SelectionChanged="javaPathComboBox_SelectionChanged"
-                                      />
-                                <Label x:Name="javaInfoLabel" IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, ElementName=isAutoJavaToggle}"/>
-                                <Button x:Name="chooseJavaButton" Content="{DynamicResource String.Settingwindow.Env.Java.Select}" Margin="0,5,0,0"
-                                    IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, ElementName=isAutoJavaToggle}" Click="chooseJavaButton_Click"
-                                    />
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Root}" Margin="0,0,0,5">
-                            <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Root.VersionIsolation}" IsChecked="{Binding VersionIsolation}"/>
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Input;
+using MahApps.Metro;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using ICELauncher.Config;
+using ICELauncher.Core.Util;
 
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Root.TypeTitle}" Margin="0,10,0,0"/>
-                                <RadioButton Margin="0,0,0,5"
-                                             Content="{DynamicResource String.Settingwindow.Env.Root.Root}" IsChecked="{Binding Path=GamePathType, Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=0}"/>
-                                <RadioButton Margin="0,0,0,5"
-                                             Content="{DynamicResource String.Settingwindow.Env.Root.AppData}" 
-                                             IsChecked="{Binding Path=GamePathType, Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=1}"/>
-                                <RadioButton Margin="0,0,0,5" 
-                                             Content="{DynamicResource String.Settingwindow.Env.Root.Programe}"
-                                             IsChecked="{Binding Path=GamePathType, Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=2}"/>
-                                <RadioButton x:Name="dir_customRadio" Margin="0,0,0,5" 
-                                             Content="{DynamicResource String.Settingwindow.Env.Root.Custom}"
-                                             IsChecked="{Binding Path=GamePathType, Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=3}"/>
-                                <TextBox x:Name="gamedirPathTextBox"  Margin="0,0,0,5"
-                                         IsEnabled="{Binding IsChecked, ElementName=dir_customRadio}" Text="{Binding Path=GamePath}"/>
-                                <Button x:Name="gamedirChooseButton"
-                                        Content="{DynamicResource String.Settingwindow.Env.Root.Choose}" IsEnabled="{Binding IsChecked, ElementName=dir_customRadio}" Click="gamedirChooseButton_Click"/>
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Memory}" Margin="0,0,0,5">
-                            <Grid >
-                                <Controls:ToggleSwitch 
-                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                    OnLabel="{DynamicResource String.Settingwindow.Env.Memory.AutoOn}"
-                                    OffLabel="{DynamicResource String.Settingwindow.Env.Memory.AutoOff}"
-                                    IsChecked="{Binding Path=AutoMemory}"
-                                    VerticalAlignment="Top" />
-                                <Controls:RangeSlider x:Name="memorySlider"
-                                    IsSnapToTickEnabled="True"
-                                    IsEnabled="{Binding Path=AutoMemory, Converter={StaticResource BoolToOppositeBoolConverter}}"
-                                    UpperValue="{Binding ElementName=maxMemoryTextBox, Path=Text, Converter={StaticResource StringToIntConverter}}"
-                                    LowerValue="{Binding ElementName=minMemoryTextBox, Path=Text, Converter={StaticResource StringToIntConverter}}"
-                                    UpperValueChanged="memorySlider_UpperValueChanged"
-                                    LowerValueChanged="memorySlider_LowerValueChanged"
-                                    Margin="0,30"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Memory.Min}" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom"/>
-                                <TextBox x:Name="minMemoryTextBox" HorizontalAlignment="Left" Height="23" Margin="88,0,0,0" TextWrapping="Wrap"
-                                     Text="{Binding Path=MinMemory}"
-                                     IsEnabled="{Binding Path=AutoMemory, Converter={StaticResource BoolToOppositeBoolConverter}}"
-                                     PreviewTextInput="textBox1_PreviewTextInput"
-                                     InputMethod.IsInputMethodEnabled="False"
-                                     MaxLength="6"
-                                     Width="60" VerticalAlignment="Bottom"/>
-                                <TextBox x:Name="maxMemoryTextBox" Height="23" TextWrapping="Wrap" 
-                                     Text="{Binding Path=MaxMemory}" 
-                                     IsEnabled="{Binding Path=AutoMemory, Converter={StaticResource BoolToOppositeBoolConverter}}"
-                                     PreviewTextInput="textBox1_PreviewTextInput"
-                                     InputMethod.IsInputMethodEnabled="False"
-                                     MaxLength="6"
-                                     HorizontalAlignment="Right" Width="60" VerticalAlignment="Bottom"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Memory.Max}" HorizontalAlignment="Right" Margin="0,0,61,0" VerticalAlignment="Bottom"/>
-                            </Grid>
-                        </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Window}" Margin="0,0,0,5">
-                            <Grid>
-                                <TextBox
-                                         HorizontalAlignment="Left" Height="auto" TextWrapping="Wrap" 
-                                         PreviewTextInput="textBox1_PreviewTextInput"
-                                         InputMethod.IsInputMethodEnabled="False"
-                                         Text="{Binding Path=WindowSize.Width}" IsEnabled="{Binding Path=WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" Width="50"/>
-                                <TextBox
-                                         HorizontalAlignment="Left" Height="auto" TextWrapping="Wrap"
-                                         PreviewTextInput="textBox1_PreviewTextInput"
-                                         InputMethod.IsInputMethodEnabled="False"
-                                         Text="{Binding Path=WindowSize.Height}"
-                                         IsEnabled="{Binding Path=WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" Width="50" Margin="97,0,0,0"/>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Window.Full}"
-                                          HorizontalAlignment="Right" Width="50" Height="auto" IsChecked="{Binding Path=WindowSize.FullScreen}"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Window.WH}" HorizontalAlignment="Left" Margin="50,0,0,0.76" d:LayoutOverrides="Height"/>
-                            </Grid>
-                        </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Pro}" Margin="0,0,0,5">
-                            <StackPanel>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Pro.Agent}"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Path=JavaAgent}"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Pro.GC}" Margin="0,5,0,0"/>
-                                <RadioButton
-                                             Content="{DynamicResource String.Settingwindow.Env.Pro.GC.G1}"
-                                    IsChecked="{Binding Path=GCType, Converter={StaticResource SettingCGRadioButtonConverter},ConverterParameter=0}"/>
-                                <RadioButton Margin="0,5,0,0"
-                                             Content="{DynamicResource String.Settingwindow.Env.Pro.GC.Serial}"
-                                             IsChecked="{Binding Path=GCType, Converter={StaticResource SettingCGRadioButtonConverter},ConverterParameter=1}"/>
-                                <RadioButton Margin="0,5,0,0" 
-                                             Content="{DynamicResource String.Settingwindow.Env.Pro.GC.Paralle}"
-                                             IsChecked="{Binding Path=GCType, Converter={StaticResource SettingCGRadioButtonConverter},ConverterParameter=2}"/>
-                                <RadioButton Margin="0,5,0,0" 
-                                             Content="{DynamicResource String.Settingwindow.Env.Pro.GC.CMS}"
-                                             IsChecked="{Binding Path=GCType, Converter={StaticResource SettingCGRadioButtonConverter},ConverterParameter=3}"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Pro.GC.Arg}" Margin="0,5,0,0"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Path=GCArgument}"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Pro.JVMArg}" Margin="0,5,0,0"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Path=AdvencedJvmArguments}"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Pro.GameArg}" Margin="0,5,0,0"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Path=AdvencedGameArguments}"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Pro.ArgNote}" FontSize="10"/>
+namespace ICELauncher.Windows
+{
+    /// <summary>
+    /// SettingWindow.xaml 的交互逻辑
+    /// </summary>
+    public partial class SettingWindow : MetroWindow
+    {
+        private Config.MainConfig config;
+        private List<AuthTypeItem> authTypes = new List<AuthTypeItem>()
+        {
+            new AuthTypeItem(){Type = Config.AuthenticationType.OFFLINE, Name = App.GetResourceString("String.MainWindow.Auth.Offline")},
+            new AuthTypeItem(){Type = Config.AuthenticationType.MOJANG, Name = App.GetResourceString("String.MainWindow.Auth.Mojang")},
+            new AuthTypeItem(){Type = Config.AuthenticationType.NIDE8, Name = App.GetResourceString("String.MainWindow.Auth.Nide8")},
+            new AuthTypeItem(){Type = Config.AuthenticationType.CUSTOM_SERVER, Name = App.GetResourceString("String.MainWindow.Auth.Custom")}
+        };
 
-                            </StackPanel>
-                        </Expander>
+        public SettingWindow()
+        {
+            InitializeComponent();
 
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.AutoFill}" Margin="0,0,0,5">
-                            <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.AutoFill.Lib}" IsChecked="{Binding Path=DownloadLostDepend}" Margin="0,0,0,5"/>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.AutoFill.Assets}" IsChecked="{Binding Path=DownloadLostAssets}"/>
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Habbit}" Margin="0,0,0,5">
-                            <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Habbit.Exit}" IsChecked="{Binding Path=ExitAfterLaunch}" Margin="0,0,0,5"/>
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Debug}" Margin="0,0,0,5">
-                            <StackPanel>
-                                <CheckBox x:Name="debugCheckBox" Content="{DynamicResource String.Settingwindow.Env.Debug.Mode}" IsChecked="{Binding Path=Debug}"/>
-                            </StackPanel>
-                        </Expander>
-                        <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Env.Note}"/>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="{DynamicResource String.Settingwindow.Version}">
-                <Grid>
-                    <Label x:Name="label6" Content="{DynamicResource String.Settingwindow.Version.ChooseText}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,1,0,0"/>
-                    <ComboBox x:Name="VersionsComboBox" Margin="148,0,155,0" VerticalAlignment="Top" DisplayMemberPath="ID" SelectionChanged="VersionsComboBox_SelectionChanged"/>
-                    <GroupBox x:Name="groupBox7" Header="{DynamicResource String.Settingwindow.Version.Options}" Margin="10,31,10,0">
-                        <Grid>
-                            <DataGrid x:Name="versionOptionsGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,0,0,20">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.T}" Binding="{Binding Key}" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.V}" Binding="{Binding Value}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                            <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Version.Options.Note}" VerticalAlignment="Bottom"/>
-                        </Grid>
-                    </GroupBox>
-                    <Button x:Name="refreshVersionsButton" Content="{DynamicResource String.Settingwindow.Version.Refresh}"
-                            VerticalAlignment="Top" HorizontalAlignment="Right" Width="140" Click="refreshVersionsButton_Click" Margin="0,-1,10,0"/>
-                    <!--
-                    <GroupBox x:Name="groupBox" Header="{DynamicResource String.Settingwindow.Version.Control}" Margin="0,31,10,0" HorizontalAlignment="Right" Width="170">
-                        <StackPanel/>
-                    </GroupBox>
-                    -->
-                    
-                </Grid>
-            </TabItem>
-            <TabItem Header="{DynamicResource String.Settingwindow.User}">
-                <ScrollViewer>
-                    <StackPanel x:Name="userGrid" Margin="10,0">
-                        <Expander Header="启动验证类型设置" Margin="0,0,0,5">
-                            <StackPanel>
-                                <ComboBox x:Name="authtypeCombobox" Margin="10,5,10,5" DisplayMemberPath="Name"/>
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.User.Nide8}" Margin="0,0,0,5">
-                            <StackPanel>
-                                <Label Content="{DynamicResource String.Settingwindow.User.Nide8.ID}"/>
-                                <TextBox x:Name="nide8IdTextBox" Margin="5,0,5,5" Text="{Binding Nide8ServerID}"/>
-                                <CheckBox Margin="5,0,5,5" Content="{DynamicResource String.Settingwindow.User.Nide8.UsingNide8ServerIP}" IsChecked="{Binding AllUsingNide8}"/>
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.User.Info}" Margin="0,0,0,5">
-                            <StackPanel>
-                                <Label Content="{DynamicResource String.Base.Username}"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Path=UserName}"/>
-                                <Label Content="{DynamicResource String.Settingwindow.User.Info.Note}"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.UnRemember}" Margin="0,10,0,5" Click="Button_Click"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.Pack}" Margin="0,0,0,5" Click="Button_Click_2"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.Clear}" Click="Button_Click_1"/>
-                                <Label Content="{DynamicResource String.Settingwindow.User.Info.Note2}"/>
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.User.Pro}" Margin="0,0,0,5">
-                            <StackPanel>
-                                <Label Content="{DynamicResource String.Settingwindow.User.Pro.Note}"/>
-                                <Label Content="{DynamicResource String.Settingwindow.User.Pro.ProxyAddress}"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Path=AuthServer}"/>
-                                <Label Content="{DynamicResource String.Settingwindow.User.Pro.GUID}"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Path=ClientToken}"/>
-                            </StackPanel>
-                        </Expander>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="自定义">
-                <ScrollViewer>
-                    <StackPanel x:Name="customGrid" Margin="10,0,10,0">
-                        <Expander Header="启动器主题设置" Margin="0,0,0,5">
-                            <StackPanel>
-                                <Label Content="启动器主题颜色:"/>
-                                <ComboBox x:Name="AccentColorComboBox" DisplayMemberPath="Name" SelectionChanged="AccentColorComboBox_SelectionChanged" Text="{Binding Path=AccentColor}" HorizontalAlignment="Left" Width="200"/>
-                                <Label Content="启动器主题:"/>
-                                <ComboBox x:Name="appThmeComboBox" SelectionChanged="appThmeComboBox_SelectionChanged" DisplayMemberPath="Name" Text="{Binding Path=AppThme}" HorizontalAlignment="Left" Width="200"/>
-                            </StackPanel>
-                        </Expander>
+            Refresh();
+        }
 
-                        <Expander Header="启动器背景元素设置" Margin="0,0,0,5">
-                            <StackPanel>
-                                <CheckBox x:Name="checkBox1" Content="开启自定义背景图片" IsChecked="{Binding Path=CustomBackGroundPicture}" Margin="0,0,0,2"/>
-                                <CheckBox x:Name="checkBox2" Content="开启自定义背景音乐" IsChecked="{Binding Path=CustomBackGroundMusic}" Margin="0,0,0,2"/>
-                                <Label Content="*自定义方法请查看启动器教程文档"/>
-                            </StackPanel>
-                        </Expander>
+        private async void Refresh()
+        {
+            config = DeepCloneObject(App.config.MainConfig);
+            debugCheckBox.DataContext = config.Launcher;
+            javaPathComboBox.ItemsSource = App.javaList;
+            environmentGrid.DataContext = config.Environment;
+            memorySlider.Maximum = SystemTools.GetTotalMemory();
+            customGrid.DataContext = config.Customize;
+            AccentColorComboBox.ItemsSource = ThemeManager.Accents;
+            appThmeComboBox.ItemsSource = ThemeManager.AppThemes;
+            serverGroupBox.DataContext = config.Server;
+            authtypeCombobox.ItemsSource = authTypes;
+            authtypeCombobox.SelectedItem = authTypes.Where(x => { return x.Type == config.User.AuthenticationType; }).FirstOrDefault();
+            userGrid.DataContext = config.User;
+            VersionsComboBox.ItemsSource = await App.handler.GetVersionsAsync();
+            if (App.config.MainConfig.Environment.VersionIsolation)
+            {
+                VersionsComboBox.IsEnabled = true;
+            }
+            else
+            {
+                VersionsComboBox.IsEnabled = false;
+                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(App.handler, new Core.Modules.Version() { ID = "null" });
+            }
+        }
 
-                        <Expander Header="自定义内容设置" Margin="0,0,0,5">
-                            <StackPanel>
-                                <Label Content="启动器标题:"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Path=LauncherTitle}"/>
-                                <Label Content="游戏窗口标题:"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Path=GameWindowTitle}"/>
-                                <Label Content="游戏版本信息:"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Path=VersionInfo}"/>
-                            </StackPanel>
-                        </Expander>
+        private async void chooseJavaButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
+            {
+                Title = "选择Java",
+                Filter = "Java应用程序(无窗口)|javaw.exe|Java应用程序(含窗口)|java.exe",
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                Java java = await Java.GetJavaInfoAsync(dialog.FileName);
+                if (java!=null)
+                {
+                    this.javaPathComboBox.Text = java.Path;
+                    this.javaInfoLabel.Content = string.Format("Java版本：{0}，位数：{1}", java.Version, java.Arch);
+                }
+                else
+                {
+                    this.javaPathComboBox.Text = dialog.FileName;
+                    await this.ShowMessageAsync("选择的Java无法正确获取信息", "请确认您选择的是正确的Java应用");
+                }
+            }
+        }
 
-                        <Expander Header="Icecraft服务器设置" Margin="0,0,0,5">
-                            <StackPanel x:Name="serverGroupBox">
-                                <CheckBox x:Name="checkBox3" Content="在主界面显示服务器信息" IsChecked="{Binding Path=ShowServerInfo}" Margin="0,0,0,5"/>
-                                <CheckBox x:Name="checkBox4" Content="启动后自动进入服务器" IsChecked="{Binding Path=LaunchToServer}" Margin="0,0,0,5"/>
-                                <Label x:Name="label9" Content="服务器名称:"/>
-                                <TextBox x:Name="textBox7" TextWrapping="NoWrap" Text="{Binding Path=ServerName}" HorizontalAlignment="Left" Width="300"/>
-                                <Label x:Name="label7" Content="服务器地址:"/>
-                                <TextBox x:Name="textBox5" TextWrapping="NoWrap" Text="{Binding Path=Address}" HorizontalAlignment="Left" Width="300"/>
-                                <Label x:Name="label8" Content="服务器端口(SRV填写0):"/>
-                                <TextBox x:Name="textBox6" Text="{Binding Path=Port}"
-                                     PreviewTextInput="textBox1_PreviewTextInput"
-                                     InputMethod.IsInputMethodEnabled="False"
-                                     MaxLength="6" HorizontalAlignment="Left" Width="80"
-                                     />
+        private void gamedirChooseButton_Click(object sender, RoutedEventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog()
+            {
+                Description = "选择游戏运行根目录",
+                ShowNewFolderButton = true
+            };
+            var result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.Cancel)
+            {
+                return;
+            }
+            else
+            {
+                gamedirPathTextBox.Text = dialog.SelectedPath.Trim();
+                config.Environment.GamePath = dialog.SelectedPath.Trim();
+            }
+        }
+        #region 全局设置部分
+        private void memorySlider_UpperValueChanged(object sender, RangeParameterChangedEventArgs e)
+        {
+            config.Environment.MaxMemory = Convert.ToInt32(((RangeSlider)sender).UpperValue);
+        }
 
+        private void memorySlider_LowerValueChanged(object sender, RangeParameterChangedEventArgs e)
+        {
+            config.Environment.MinMemory = Convert.ToInt32(((RangeSlider)sender).LowerValue);
+        }
+        #endregion
 
-                            </StackPanel>
-                        </Expander>
-                    </StackPanel>
-                </ScrollViewer>
+        private void textBox1_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex re = new Regex("[^0-9.-]+");
+            e.Handled = re.IsMatch(e.Text);
+        }
 
-            </TabItem>
-            <TabItem Header="关于">
-                <StackPanel>
-                    <TextBlock Margin="10,0">
-                        启动器维基
-                        <Hyperlink NavigateUri="https://github.com/Icetebe/ICELauncher/wiki">
-                            https://github.com/Icetebe/ICELauncherher/wiki
-                        </Hyperlink>
-                    </TextBlock>
-                    <TextBlock Margin="10,0">
-                        启动器声明
-                        <Hyperlink NavigateUri="https://github.com/Icetebe/ICELauncherher/blob/master/README.md">
-                            https://github.com/Icetebe/ICELauncherher/blob/master/README.md
-                        </Hyperlink>
-                    </TextBlock>
-                    <TextBlock Margin="10,0">
-                        启动器开源
-                        <Hyperlink NavigateUri="https://github.com/Icetebe/ICELauncherher">
-                            https://github.com/Icetebe/ICELauncherher
-                        </Hyperlink>
-                    </TextBlock>
-                </StackPanel>
-            </TabItem>
+        //保存按钮点击后
+        private async void saveButton_Click(object sender, RoutedEventArgs e)
+        {
+            #region 实时修改
+            switch (config.Environment.GamePathType)
+            {
+                case GameDirEnum.ROOT:
+                    App.handler.GameRootPath = Path.GetFullPath(".icecraft");
+                    break;
+                case GameDirEnum.APPDATA:
+                    App.handler.GameRootPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\.icecraft";
+                    break;
+                case GameDirEnum.PROGRAMFILES:
+                    App.handler.GameRootPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles) + "\\.icecraft";
+                    break;
+                case GameDirEnum.CUSTOM:
+                    App.handler.GameRootPath = config.Environment.GamePath + "\\.icecraft";
+                    break;
+                default:
+                    throw new ArgumentException("判断游戏目录类型时出现异常，请检查配置文件中GamePathType节点");
+            }
+            App.handler.VersionIsolation = config.Environment.VersionIsolation;
+            if (!string.IsNullOrWhiteSpace(nide8IdTextBox.Text))
+            {
+                App.nide8Handler = new Core.Net.Nide8API.APIHandler(nide8IdTextBox.Text);
+            }
+            #endregion
+            config.User.AuthenticationType = ((AuthTypeItem)authtypeCombobox.SelectedItem).Type;
+            App.config.MainConfig = config;
+            if (App.config.MainConfig.Environment.VersionIsolation)
+            {
+                await GameHelper.SaveOptionsAsync(
+                (List<VersionOption>)versionOptionsGrid.ItemsSource,
+                App.handler,
+                (Core.Modules.Version)VersionsComboBox.SelectedItem);
+            }
+            else
+            {
+                await GameHelper.SaveOptionsAsync(
+                (List<VersionOption>)versionOptionsGrid.ItemsSource,
+                App.handler,
+                new Core.Modules.Version() { ID = "null" });
+            }
+            
+            App.config.Save();
+            await this.ShowMessageAsync("保存成功", "所有设置已成功保存在本地");
+        }
 
-        </TabControl>
-        <Button x:Name="saveButton" Content="{DynamicResource String.Base.Apply}"
-                Margin="0,0,10,10" Style="{StaticResource AccentedSquareButtonStyle}" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="saveButton_Click"/>
-        <Button x:Name="cancelButton" Content="{DynamicResource String.Base.Cancel}" 
-                Margin="0,0,135,10" Style="{DynamicResource SquareButtonStyle}" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="cancelButton_Click"/>
+        //取消按钮点击后
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
 
-    </Grid>
-</Controls:MetroWindow>
+        private async void VersionsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            System.Windows.Controls.ComboBox comboBox = (System.Windows.Controls.ComboBox)sender;
+
+            if (comboBox.SelectedItem != null)
+            {
+                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(App.handler, (Core.Modules.Version)comboBox.SelectedItem);
+            }
+            else
+            {
+                versionOptionsGrid.ItemsSource = null;
+            }
+        }
+
+        private async void refreshVersionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            VersionsComboBox.ItemsSource = await App.handler.GetVersionsAsync();
+        }
+
+        private void AccentColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Accent item = (Accent)((System.Windows.Controls.ComboBox)sender).SelectedItem;
+            if (item != null)
+            {
+                var AppStyle = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
+                var theme = AppStyle.Item1;
+                ThemeManager.ChangeAppStyle(System.Windows.Application.Current, ThemeManager.GetAccent(item.Name), theme);
+            }
+        }
+
+        private void appThmeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AppTheme item = (AppTheme)((System.Windows.Controls.ComboBox)sender).SelectedItem;
+            if (item != null)
+            {
+                var AppStyle = ThemeManager.DetectAppStyle(System.Windows.Application.Current);
+                var accent = AppStyle.Item2;
+                ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent, item);
+            }
+        }
+
+        private static T DeepCloneObject<T>(T t) where T : class
+        {
+            T model = Activator.CreateInstance<T>();                     //实例化一个T类型对象
+            PropertyInfo[] propertyInfos = model.GetType().GetProperties();     //获取T对象的所有公共属性
+            foreach (PropertyInfo propertyInfo in propertyInfos)
+            {
+                //判断值是否为空，如果空赋值为null见else
+                if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+                {
+                    //如果convertsionType为nullable类，声明一个NullableConverter类，该类提供从Nullable类到基础基元类型的转换
+                    NullableConverter nullableConverter = new NullableConverter(propertyInfo.PropertyType);
+                    //将convertsionType转换为nullable对的基础基元类型
+                    propertyInfo.SetValue(model, Convert.ChangeType(propertyInfo.GetValue(t,null), nullableConverter.UnderlyingType), null);
+                }
+                else
+                {
+                    propertyInfo.SetValue(model, Convert.ChangeType(propertyInfo.GetValue(t,null), propertyInfo.PropertyType), null);
+                }
+            }
+            return model;
+        }
+
+        private void javaPathComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Java java = (Java)(((System.Windows.Controls.ComboBox)sender).SelectedItem);
+            if (java != null)
+            {
+                this.javaInfoLabel.Content = string.Format("Java版本：{0}，位数：{1}", java.Version, java.Arch);
+            }
+            else
+            {
+                this.javaInfoLabel.Content = null;
+            }
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(config.User.AccessToken))
+            {
+                string token = config.User.AccessToken;
+                config.User.AccessToken = null;
+                Core.Net.MojangApi.Endpoints.Invalidate invalidate = new Core.Net.MojangApi.Endpoints.Invalidate(token);
+                var loading = await this.ShowProgressAsync("注销正版登陆中", "需要联网进行注销，请稍后...");
+                loading.SetIndeterminate();
+                var result = await invalidate.PerformRequestAsync();
+                await loading.CloseAsync();
+                if (result.IsSuccess)
+                {
+                    await this.ShowMessageAsync("注销成功", "已经安全的取消了记住登录状态");
+                }
+                else
+                {
+                    await this.ShowMessageAsync("已取消记住登陆状态但未注销", "虽然取消并删除了本地的记住登陆状态和密匙，但未能成功联网注销密匙，请注意密匙安全");
+                }
+
+            }
+            else
+            {
+                await this.ShowMessageAsync("未进行过在线验证", "您未进行过在线验证，无需注销登陆状态");
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            config.User = new Config.User()
+            {
+                AuthenticationType = Config.AuthenticationType.OFFLINE
+            };
+            this.ShowMessageAsync("重置完成", "点击右下角应用按钮保存");
+        }
+
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            config.User.AccessToken = null;
+            config.User.AuthenticationUserData = null;
+            config.User.AuthenticationUUID = null;
+            config.User.ClientToken = null;
+            config.User.UserName = null;
+            await this.ShowMessageAsync("设置发布状态成功",
+                "点击右下角应用按钮保存，保存后除了关闭启动器请不要执行任何操作（二次设置，启动游戏等），否则将导致数据重新初始化");
+        }
+    }
+}
