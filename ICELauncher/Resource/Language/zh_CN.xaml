@@ -52,7 +52,7 @@
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.AutoVerifying">在线验证中(自动验证)...</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.AutoVerifying2">这可能需要几秒的时间，我们正在进行处理。（正在使用服务器统一通行证验证）</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.VerificationFailed">统一通行证验证失败</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.VerificationFailed2">请确认您的统一通行证账号（通行证绑定QQ的邮箱）和密码填写无误，您可以联系服主咨询。错误信息:</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Nide8.VerificationFailed2">请确认您的统一通行证账号邮箱（通行证账号所绑定QQ的邮箱）和密码填写无误，您可以联系服主咨询。错误信息:</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.AutoVerificationFailed">自动验证失败</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.AutoVerificationFailed2">保存的验证信息已过期，请重新登陆（正在使用服务器统一通行证验证）</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.Login">请键入登陆信息</sys:String>
